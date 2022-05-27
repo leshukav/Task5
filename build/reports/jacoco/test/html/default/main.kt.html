@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>main.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">OOP</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">main.kt</span></div><h1>main.kt</h1><pre class="source lang-java linenums">import java.util.*
+import javax.management.remote.rmi._RMIConnectionImpl_Tie
+
+fun main() {
+<span class="nc" id="L5">    val service = WallService()</span>
+<span class="nc" id="L6">    val post = service.add(Post(id = 1, text = &quot;Hello&quot;))</span>
+<span class="nc" id="L7">    val post1 = service.add(Post(id = 2,  text = &quot;Hello Word&quot;))</span>
+<span class="nc" id="L8">    val post2 = service.update(Post(id = 1,text = &quot;Yoops&quot;))</span>
+
+<span class="nc" id="L10">    println(post)</span>
+<span class="nc" id="L11">    println(post1)</span>
+<span class="nc" id="L12">    println(post2)</span>
+<span class="nc" id="L13">}</span>
+
+<span class="fc" id="L15">class WallService() {</span>
+<span class="fc" id="L16">    private var posts = emptyArray&lt;Post&gt;()</span>
+
+<span class="fc" id="L18">    private var identifikator: Int = 1</span>
+
+    fun add(post: Post): Post {
+<span class="fc" id="L21">        post.id = identifikator</span>
+<span class="fc" id="L22">        posts += post</span>
+<span class="fc" id="L23">        identifikator++</span>
+<span class="fc" id="L24">        return posts.last()</span>
+    }
+
+    fun update(post: Post): Boolean {
+<span class="fc bfc" id="L28" title="All 2 branches covered.">        for ((index, post1) in posts.withIndex()) {</span>
+<span class="fc bfc" id="L29" title="All 2 branches covered.">            if (post1.id == post.id) {</span>
+<span class="fc" id="L30">                posts[index] =</span>
+<span class="fc" id="L31">                    post.copy(id = post1.id)</span>
+<span class="fc" id="L32">                return true</span>
+            }
+        }
+<span class="fc" id="L35">        return false</span>
+    }
+}
+
+// РѕР±СЉРµРєС‚, РѕРїРёСЃС‹РІР°СЋС‰РёР№ Р·Р°РїРёСЃСЊ РЅР° СЃС‚РµРЅРµ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РёР»Рё СЃРѕРѕР±С‰РµСЃС‚РІР°
+<span class="fc" id="L40">data class Post(</span>
+<span class="pc" id="L41">    var id: Int = 0,                          // РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ Р·Р°РїРёСЃРё</span>
+<span class="pc" id="L42">    val owner_id: Int = 0,</span>
+<span class="pc" id="L43">    val from_id: Int = 0,</span>
+<span class="pc" id="L44">    val created_by: Int = 0,</span>
+<span class="pc" id="L45">    val date: Int = 0,</span>
+<span class="pc" id="L46">    var text: String =&quot;&quot;,</span>
+<span class="pc" id="L47">    val reply_owner_id: Int = 0,</span>
+<span class="pc" id="L48">    val reply_post_id: Int = 0,</span>
+<span class="pc" id="L49">    val friedly_only: Boolean = false,</span>
+<span class="pc" id="L50">    val comments: Comments = Comments(),</span>
+<span class="pc" id="L51">    val copyring: Copyring = Copyring(),</span>
+<span class="pc" id="L52">    val likes: Likes = Likes(),</span>
+<span class="pc" id="L53">    val reposts: Reposts = Reposts(),</span>
+<span class="pc" id="L54">    val views: Views = Views(),</span>
+<span class="pc" id="L55">    val can_pin: Boolean = true,</span>
+<span class="pc" id="L56">    val can_delete: Boolean = false,</span>
+<span class="pc" id="L57">    val can_edit: Boolean = true,</span>
+<span class="pc" id="L58">    val is_pinned: Boolean = false,</span>
+<span class="pc" id="L59">    val marked_as_ads: Boolean = false,</span>
+<span class="pc" id="L60">    val is_favorite: Boolean = true,</span>
+<span class="pc" id="L61">    val donut: Donut = Donut(),</span>
+<span class="pc" id="L62">    val postponed_id: Int = 0</span>
+<span class="fc" id="L63">)</span>
+
+// РёРЅС„РѕСЂРјР°С†РёСЏ Рѕ РєРѕРјРјРµРЅС‚Р°СЂРёСЏС… Рє Р·Р°РїРёСЃРё
+<span class="fc" id="L66">data class Comments(</span>
+<span class="pc" id="L67">    val count: Int = 0,</span>
+<span class="pc" id="L68">    val can_post: Boolean = false,</span>
+<span class="pc" id="L69">    val groups_can_post: Boolean = false,</span>
+<span class="pc" id="L70">    val can_close: Boolean =false,</span>
+<span class="pc" id="L71">    val can_open: Boolean = false</span>
+<span class="fc" id="L72">)</span>
+
+// РёСЃС‚РѕС‡РЅРёРє РјР°С‚РµСЂРёР°Р»Р°
+<span class="fc" id="L75">data class Copyring(</span>
+<span class="pc" id="L76">    val id: Int = 0,</span>
+<span class="pc" id="L77">    val link: String = &quot;&quot;,</span>
+<span class="pc" id="L78">    val name: String = &quot;&quot;,</span>
+<span class="pc" id="L79">    val type: String = &quot;&quot;</span>
+<span class="fc" id="L80">)</span>
+
+// РёРЅС„РѕСЂРјР°С†РёСЏ Рѕ Р»Р°Р№РєР°С… Рє Р·Р°РїРёСЃРё
+<span class="fc" id="L83">data class Likes(</span>
+<span class="pc" id="L84">    val count: Int = 0,</span>
+<span class="pc" id="L85">    val user_likes: Boolean = true,</span>
+<span class="pc" id="L86">    val can_like: Boolean = true,</span>
+<span class="pc" id="L87">    val can_publish: Boolean = true</span>
+<span class="fc" id="L88">)</span>
+
+// РёРЅС„РѕСЂРјР°С†РёСЏ Рѕ СЂРµРїРѕСЃС‚Р°С… Р·Р°РїРёСЃРё (&quot;Р Р°СЃСЃРєР°Р·Р°С‚СЊ РґСЂСѓР·СЊСЏРј&quot;)
+<span class="fc" id="L91">data class Reposts(</span>
+<span class="pc" id="L92">    val count: Int = 0,</span>
+<span class="pc" id="L93">    val user_reposted: Boolean = false</span>
+<span class="fc" id="L94">)</span>
+
+// РёРЅС„РѕСЂРјР°С†РёСЏ Рѕ РїСЂРѕСЃРјРѕС‚СЂР°С… Р·Р°РїРёСЃРё. РћР±СЉРµРєС‚ СЃ РµРґРёРЅСЃС‚РІРµРЅРЅС‹Рј РїРѕР»РµРј
+<span class="fc" id="L97">data class Views(</span>
+<span class="pc" id="L98">    val count: Int = 0</span>
+<span class="fc" id="L99">)</span>
+
+// РёРЅС„РѕСЂРјР°С†РёСЏ Рѕ Р·Р°РїРёСЃРё VK Donut
+<span class="fc" id="L102">data class Donut(</span>
+<span class="pc" id="L103">    val is_donut: Boolean = true,</span>
+<span class="pc" id="L104">    val paid_duration: Int = 0,</span>
+<span class="pc" id="L105">    val can_publish_free_copy: Boolean = true,</span>
+<span class="pc" id="L106">    val edit_mode: String = &quot;&quot;</span>
+<span class="fc" id="L107">)</span>
+
+
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

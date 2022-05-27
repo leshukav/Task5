@@ -1,4 +1,5 @@
 plugins {
+    id 'jacoco'
     id 'org.jetbrains.kotlin.jvm' version '1.5.10'
     id 'java'
 }
@@ -14,9 +15,7 @@ repositories {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.2'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.2'
+    testImplementation 'junit:junit:4.13.2'
+ //   testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.2'
 }
 
-test {
-    useJUnitPlatform()
-}
