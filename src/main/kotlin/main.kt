@@ -1,11 +1,8 @@
-import java.util.*
-import javax.management.remote.rmi._RMIConnectionImpl_Tie
-
 fun main() {
     val service = WallService()
     val post = service.add(Post(id = 1, text = "Hello"))
-    val post1 = service.add(Post(id = 2,  text = "Hello Word"))
-    val post2 = service.update(Post(id = 1,text = "Yoops"))
+    val post1 = service.add(Post(id = 2, text = "Hello Word"))
+    val post2 = service.update(Post(id = 1, text = "Yoops"))
 
     println(post)
     println(post1)
@@ -43,11 +40,11 @@ data class Post(
     val from_id: Int = 0,
     val created_by: Int = 0,
     val date: Int = 0,
-    var text: String ="",
+    var text: String = "",
     val reply_owner_id: Int = 0,
     val reply_post_id: Int = 0,
     val friedly_only: Boolean = false,
-    val comments: Comments = Comments(),
+    val comments: Comments? = null,
     val copyring: Copyring = Copyring(),
     val likes: Likes = Likes(),
     val reposts: Reposts = Reposts(),
@@ -59,7 +56,8 @@ data class Post(
     val marked_as_ads: Boolean = false,
     val is_favorite: Boolean = true,
     val donut: Donut = Donut(),
-    val postponed_id: Int = 0
+    val postponed_id: Int = 0,
+    val attachment: Array<Attachment> = emptyArray()
 )
 
 // информация о комментариях к записи
@@ -67,7 +65,7 @@ data class Comments(
     val count: Int = 0,
     val can_post: Boolean = false,
     val groups_can_post: Boolean = false,
-    val can_close: Boolean =false,
+    val can_close: Boolean = false,
     val can_open: Boolean = false
 )
 
@@ -106,5 +104,31 @@ data class Donut(
     val edit_mode: String = ""
 )
 
+abstract class Attachment(
+    open val type: String
+)
 
+data class Foto(
+    val id: Int = 0,                   // Идентификатор фотографии
+    val date: Int = 0,               // дата добавления фотографии
+    val type: String = ""               // текст описания фотографии
+)
+
+data class AttachmentFoto(val foto: Foto, override val type: String) : Attachment(type)
+
+data class Video(
+    val id: Int = 0, // идентификатор видеозаписи
+    val title: String = "", // название видеозаписи
+    val date: Int = 0 // дата создания видеозаписи
+)
+
+data class AttachmentVideo(val video: Video, override val type: String) : Attachment(type)
+
+data class Audio(
+    val id: Int = 0, // идентификатор аудиозаписи
+    val artist: String = "", // исполнитель
+    val title: String = "", // название аудиозаписи
+    val date: Int = 0 // дата создания аудиозаписи
+)
+data class AttachmentAudio(val video: Video, override val type: String) : Attachment(type)
 
