@@ -1,12 +1,14 @@
+import java.lang.RuntimeException
 import java.time.LocalDateTime
-import javax.xml.stream.events.Comment
+import kotlin.coroutines.coroutineContext
 
 fun main() {
     val service = WallService()
     val post = service.add(Post(id = 1, text = "Hello"))
     val post1 = service.add(Post(id = 2, text = "Hello Word"))
     val post2 = service.update(Post(id = 1, text = "Yoops"))
-
+    service.createComments(1, Comments(text = "Добавление комментария"))
+    service.createComments(2, Comments(text = "Kомментариi"))
     println(post)
     println(post1)
     println(post2)
@@ -15,23 +17,28 @@ fun main() {
 
 class WallService() {
     private var posts = emptyArray<Post>()
-    //   private var comments = emptyArray<Comments>()
-
+    private var comments = emptyArray<Comments>()
     private var identifikator: Int = 1
-
-    fun printPosts() {
-        for (post in posts) {
-            println(post)
-        }
-    }
 
     fun add(post: Post): Post {
         post.id = identifikator
         posts += post
         identifikator++
-
         return posts.last()
     }
+
+    fun createComments(postId: Int, comment: Comments): Comments {
+        for ((index, post) in posts.withIndex()) {
+            if (post.id == postId) {
+                comment.count++
+                comments += comment
+                posts[index] = post.copy(comments = comment)
+                return comments.last()
+            }
+        }
+        throw PostNotFoundException("Данного поста не существует")
+    }
+
 
     fun update(post: Post): Boolean {
         for ((index, newPost) in posts.withIndex()) {
@@ -43,11 +50,16 @@ class WallService() {
         }
         return false
     }
-    //   fun createComments (postId: Int, comment: Comment) : Comments {
-    //       TODO()
-    //   }
 
+    fun printPosts() {
+        for (post in posts) {
+            println(post)
+        }
+    }
 }
+
+class PostNotFoundException(message: String) : RuntimeException(message)
+
 
 // объект, описывающий запись на стене пользователя или сообщества
 data class Post(
@@ -77,7 +89,8 @@ data class Post(
 
 // информация о комментариях к записи
 data class Comments(
-    val count: Int = 0,
+    var count: Int = 0,
+    var text: String = "",   // текст комментария
     val canPost: Boolean = false,
     val groupsCanPost: Boolean = false,
     val canClose: Boolean = false,
@@ -115,7 +128,7 @@ data class Views(
 data class Donut(
     val isDonut: Boolean = true,
     val paidDuration: Int = 0,
-    val canPublish_free_copy: Boolean = true,
+    val canPublishFreeCopy: Boolean = true,
     val editMode: String = ""
 )
 
