@@ -1,124 +1,135 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>main.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">OOP</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">main.kt</span></div><h1>main.kt</h1><pre class="source lang-java linenums">
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>main.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">OOP</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">main.kt</span></div><h1>main.kt</h1><pre class="source lang-java linenums">import java.lang.RuntimeException
 import java.time.LocalDateTime
-import javax.xml.stream.events.Comment
+import kotlin.coroutines.coroutineContext
 
 fun main() {
 <span class="nc" id="L6">    val service = WallService()</span>
 <span class="nc" id="L7">    val post = service.add(Post(id = 1, text = &quot;Hello&quot;))</span>
-<span class="nc" id="L8">    val post1 = service.add(Post(id = 2,  text = &quot;Hello Word&quot;))</span>
-<span class="nc" id="L9">    val post2 = service.update(Post(id = 1,text = &quot;Yoops&quot;))</span>
+<span class="nc" id="L8">    val post1 = service.add(Post(id = 2, text = &quot;Hello Word&quot;))</span>
+<span class="nc" id="L9">    val post2 = service.update(Post(id = 1, text = &quot;Yoops&quot;))</span>
+<span class="nc" id="L10">    val comment1 = service.createComments(1, Comments(text = &quot;Р”РѕР±Р°РІР»РµРЅРёРµ РєРѕРјРјРµРЅС‚Р°СЂРёСЏ&quot;))</span>
 
-<span class="nc" id="L11">    println(post)</span>
-<span class="nc" id="L12">    println(post1)</span>
-<span class="nc" id="L13">    println(post2)</span>
-<span class="nc" id="L14">    service.printPosts()</span>
-<span class="nc" id="L15">}</span>
+<span class="nc" id="L12">    println(post)</span>
+<span class="nc" id="L13">    println(post1)</span>
+<span class="nc" id="L14">    println(post2)</span>
+<span class="nc" id="L15">    service.printPosts()</span>
+<span class="nc" id="L16">}</span>
 
-<span class="fc" id="L17">class WallService() {</span>
-<span class="fc" id="L18">    private var posts = emptyArray&lt;Post&gt;()</span>
- //   private var comments = emptyArray&lt;Comments&gt;()
-
+<span class="fc" id="L18">class WallService() {</span>
+<span class="fc" id="L19">    private var posts = emptyArray&lt;Post&gt;()</span>
+<span class="fc" id="L20">    private var comments = emptyArray&lt;Comments&gt;()</span>
 <span class="fc" id="L21">    private var identifikator: Int = 1</span>
 
-    fun printPosts() {
-<span class="fc bfc" id="L24" title="All 2 branches covered.">        for (post in posts) {</span>
-<span class="fc" id="L25">            println(post)</span>
-        }
-<span class="fc" id="L27">    }</span>
-
     fun add(post: Post): Post {
-<span class="fc" id="L30">        post.id = identifikator</span>
-<span class="fc" id="L31">        posts += post</span>
-<span class="fc" id="L32">        identifikator++</span>
-
-<span class="fc" id="L34">        return posts.last()</span>
+<span class="fc" id="L24">        post.id = identifikator</span>
+<span class="fc" id="L25">        posts += post</span>
+<span class="fc" id="L26">        identifikator++</span>
+<span class="fc" id="L27">        return posts.last()</span>
     }
 
-    fun update(post: Post): Boolean {
-<span class="fc bfc" id="L38" title="All 2 branches covered.">        for ((index, newPost) in posts.withIndex()) {</span>
-<span class="fc bfc" id="L39" title="All 2 branches covered.">            if (newPost.id == post.id) {</span>
-<span class="fc" id="L40">                posts[index] =</span>
-<span class="fc" id="L41">                    post.copy(ownerId = newPost.ownerId, date = newPost.date)</span>
-<span class="fc" id="L42">                return true</span>
+    fun createComments(postId: Int, comment: Comments): Comments {
+<span class="fc bfc" id="L31" title="All 2 branches covered.">        for ((index, post) in posts.withIndex()) {</span>
+<span class="fc bfc" id="L32" title="All 2 branches covered.">            if (post.id == postId) {</span>
+<span class="fc" id="L33">                comments += comment</span>
+<span class="fc" id="L34">                posts[index] = post.copy(comments = comment)</span>
+<span class="fc" id="L35">                return comments.last()</span>
             }
         }
-<span class="fc" id="L45">        return false</span>
+<span class="fc" id="L38">        throw PostNotFoundException(&quot;Р”Р°РЅРЅРѕРіРѕ РїРѕСЃС‚Р° РЅРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚&quot;)</span>
     }
- //   fun createComments (postId: Int, comment: Comment) : Comments {
- //       TODO()
- //   }
 
+
+    fun update(post: Post): Boolean {
+<span class="fc bfc" id="L43" title="All 2 branches covered.">        for ((index, newPost) in posts.withIndex()) {</span>
+<span class="fc bfc" id="L44" title="All 2 branches covered.">            if (newPost.id == post.id) {</span>
+<span class="fc" id="L45">                posts[index] =</span>
+<span class="fc" id="L46">                    post.copy(ownerId = newPost.ownerId, date = newPost.date)</span>
+<span class="fc" id="L47">                return true</span>
+            }
+        }
+<span class="fc" id="L50">        return false</span>
+    }
+
+    fun printPosts() {
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        for (post in posts) {</span>
+<span class="fc" id="L55">            println(post)</span>
+        }
+<span class="fc" id="L57">    }</span>
 }
 
+<span class="fc" id="L60">class PostNotFoundException(message: String) : RuntimeException(message)</span>
+
+
 // РѕР±СЉРµРєС‚, РѕРїРёСЃС‹РІР°СЋС‰РёР№ Р·Р°РїРёСЃСЊ РЅР° СЃС‚РµРЅРµ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РёР»Рё СЃРѕРѕР±С‰РµСЃС‚РІР°
-<span class="fc" id="L54">data class Post(</span>
-<span class="pc" id="L55">    var id: Int = 0,                          // РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ Р·Р°РїРёСЃРё</span>
-<span class="fc" id="L56">    val ownerId: Int = 0,</span>
-<span class="pc" id="L57">    val fromId: Int = 0,</span>
-<span class="pc" id="L58">    val createdBy: Int = 0,</span>
-<span class="fc" id="L59">    val date: LocalDateTime = LocalDateTime.now(),</span>
-<span class="pc" id="L60">    var text: String =&quot;&quot;,</span>
-<span class="pc" id="L61">    val replyOwnerId: Int = 0,</span>
-<span class="pc" id="L62">    val replyPostId: Int = 0,</span>
-<span class="pc" id="L63">    val friedlyOnly: Boolean = false,</span>
-<span class="pc" id="L64">    val comments: Comments = Comments(),</span>
-<span class="pc" id="L65">    val copyring: Copyring = Copyring(),</span>
-<span class="pc" id="L66">    val likes: Likes = Likes(),</span>
-<span class="pc" id="L67">    val reposts: Reposts = Reposts(),</span>
-<span class="pc" id="L68">    val views: Views = Views(),</span>
-<span class="pc" id="L69">    val canPin: Boolean = true,</span>
-<span class="pc" id="L70">    val canDelete: Boolean = false,</span>
-<span class="pc" id="L71">    val canEdit: Boolean = true,</span>
-<span class="pc" id="L72">    val isPinned: Boolean = false,</span>
-<span class="pc" id="L73">    val markedAsAds: Boolean = false,</span>
-<span class="pc" id="L74">    val isFavorite: Boolean = true,</span>
-<span class="pc" id="L75">    val donut: Donut = Donut(),</span>
-<span class="pc" id="L76">    val postponedId: Int = 0</span>
-<span class="fc" id="L77">)</span>
+<span class="fc" id="L64">data class Post(</span>
+<span class="pc" id="L65">    var id: Int = 0,                          // РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ Р·Р°РїРёСЃРё</span>
+<span class="fc" id="L66">    val ownerId: Int = 0,</span>
+<span class="pc" id="L67">    val fromId: Int = 0,</span>
+<span class="pc" id="L68">    val createdBy: Int = 0,</span>
+<span class="fc" id="L69">    val date: LocalDateTime = LocalDateTime.now(),</span>
+<span class="pc" id="L70">    var text: String = &quot;&quot;,</span>
+<span class="pc" id="L71">    val replyOwnerId: Int = 0,</span>
+<span class="pc" id="L72">    val replyPostId: Int = 0,</span>
+<span class="pc" id="L73">    val friedlyOnly: Boolean = false,</span>
+<span class="pc" id="L74">    val comments: Comments = Comments(),</span>
+<span class="pc" id="L75">    val copyring: Copyring = Copyring(),</span>
+<span class="pc" id="L76">    val likes: Likes = Likes(),</span>
+<span class="pc" id="L77">    val reposts: Reposts = Reposts(),</span>
+<span class="pc" id="L78">    val views: Views = Views(),</span>
+<span class="pc" id="L79">    val canPin: Boolean = true,</span>
+<span class="pc" id="L80">    val canDelete: Boolean = false,</span>
+<span class="pc" id="L81">    val canEdit: Boolean = true,</span>
+<span class="pc" id="L82">    val isPinned: Boolean = false,</span>
+<span class="pc" id="L83">    val markedAsAds: Boolean = false,</span>
+<span class="pc" id="L84">    val isFavorite: Boolean = true,</span>
+<span class="pc" id="L85">    val donut: Donut = Donut(),</span>
+<span class="pc" id="L86">    val postponedId: Int = 0</span>
+<span class="fc" id="L87">)</span>
 
 // РёРЅС„РѕСЂРјР°С†РёСЏ Рѕ РєРѕРјРјРµРЅС‚Р°СЂРёСЏС… Рє Р·Р°РїРёСЃРё
-<span class="fc" id="L80">data class Comments(</span>
-<span class="pc" id="L81">    val count: Int = 0,</span>
-<span class="pc" id="L82">    val canPost: Boolean = false,</span>
-<span class="pc" id="L83">    val groupsCanPost: Boolean = false,</span>
-<span class="pc" id="L84">    val canClose: Boolean =false,</span>
-<span class="pc" id="L85">    val canOpen: Boolean = false</span>
-<span class="fc" id="L86">)</span>
+<span class="fc" id="L90">data class Comments(</span>
+<span class="pc" id="L91">    val count: Int = 0,</span>
+<span class="pc" id="L92">    var text: String = &quot;&quot;,   // С‚РµРєСЃС‚ РєРѕРјРјРµРЅС‚Р°СЂРёСЏ</span>
+<span class="pc" id="L93">    val canPost: Boolean = false,</span>
+<span class="pc" id="L94">    val groupsCanPost: Boolean = false,</span>
+<span class="pc" id="L95">    val canClose: Boolean = false,</span>
+<span class="pc" id="L96">    val canOpen: Boolean = false</span>
+<span class="fc" id="L97">)</span>
 
 // РёСЃС‚РѕС‡РЅРёРє РјР°С‚РµСЂРёР°Р»Р°
-<span class="fc" id="L89">data class Copyring(</span>
-<span class="pc" id="L90">    val id: Int = 0,</span>
-<span class="pc" id="L91">    val link: String = &quot;&quot;,</span>
-<span class="pc" id="L92">    val name: String = &quot;&quot;,</span>
-<span class="pc" id="L93">    val type: String = &quot;&quot;</span>
-<span class="fc" id="L94">)</span>
+<span class="fc" id="L100">data class Copyring(</span>
+<span class="pc" id="L101">    val id: Int = 0,</span>
+<span class="pc" id="L102">    val link: String = &quot;&quot;,</span>
+<span class="pc" id="L103">    val name: String = &quot;&quot;,</span>
+<span class="pc" id="L104">    val type: String = &quot;&quot;</span>
+<span class="fc" id="L105">)</span>
 
 // РёРЅС„РѕСЂРјР°С†РёСЏ Рѕ Р»Р°Р№РєР°С… Рє Р·Р°РїРёСЃРё
-<span class="fc" id="L97">data class Likes(</span>
-<span class="pc" id="L98">    val count: Int = 0,</span>
-<span class="pc" id="L99">    val userLikes: Boolean = true,</span>
-<span class="pc" id="L100">    val canLike: Boolean = true,</span>
-<span class="pc" id="L101">    val canPublish: Boolean = true</span>
-<span class="fc" id="L102">)</span>
-
-// РёРЅС„РѕСЂРјР°С†РёСЏ Рѕ СЂРµРїРѕСЃС‚Р°С… Р·Р°РїРёСЃРё (&quot;Р Р°СЃСЃРєР°Р·Р°С‚СЊ РґСЂСѓР·СЊСЏРј&quot;)
-<span class="fc" id="L105">data class Reposts(</span>
-<span class="pc" id="L106">    val count: Int = 0,</span>
-<span class="pc" id="L107">    val userReposted: Boolean = false</span>
-<span class="fc" id="L108">)</span>
-
-// РёРЅС„РѕСЂРјР°С†РёСЏ Рѕ РїСЂРѕСЃРјРѕС‚СЂР°С… Р·Р°РїРёСЃРё. РћР±СЉРµРєС‚ СЃ РµРґРёРЅСЃС‚РІРµРЅРЅС‹Рј РїРѕР»РµРј
-<span class="fc" id="L111">data class Views(</span>
-<span class="pc" id="L112">    val count: Int = 0</span>
+<span class="fc" id="L108">data class Likes(</span>
+<span class="pc" id="L109">    val count: Int = 0,</span>
+<span class="pc" id="L110">    val userLikes: Boolean = true,</span>
+<span class="pc" id="L111">    val canLike: Boolean = true,</span>
+<span class="pc" id="L112">    val canPublish: Boolean = true</span>
 <span class="fc" id="L113">)</span>
 
+// РёРЅС„РѕСЂРјР°С†РёСЏ Рѕ СЂРµРїРѕСЃС‚Р°С… Р·Р°РїРёСЃРё (&quot;Р Р°СЃСЃРєР°Р·Р°С‚СЊ РґСЂСѓР·СЊСЏРј&quot;)
+<span class="fc" id="L116">data class Reposts(</span>
+<span class="pc" id="L117">    val count: Int = 0,</span>
+<span class="pc" id="L118">    val userReposted: Boolean = false</span>
+<span class="fc" id="L119">)</span>
+
+// РёРЅС„РѕСЂРјР°С†РёСЏ Рѕ РїСЂРѕСЃРјРѕС‚СЂР°С… Р·Р°РїРёСЃРё. РћР±СЉРµРєС‚ СЃ РµРґРёРЅСЃС‚РІРµРЅРЅС‹Рј РїРѕР»РµРј
+<span class="fc" id="L122">data class Views(</span>
+<span class="pc" id="L123">    val count: Int = 0</span>
+<span class="fc" id="L124">)</span>
+
 // РёРЅС„РѕСЂРјР°С†РёСЏ Рѕ Р·Р°РїРёСЃРё VK Donut
-<span class="fc" id="L116">data class Donut(</span>
-<span class="pc" id="L117">    val isDonut: Boolean = true,</span>
-<span class="pc" id="L118">    val paidDuration: Int = 0,</span>
-<span class="pc" id="L119">    val canPublish_free_copy: Boolean = true,</span>
-<span class="pc" id="L120">    val editMode: String = &quot;&quot;</span>
-<span class="fc" id="L121">)</span>
+<span class="fc" id="L127">data class Donut(</span>
+<span class="pc" id="L128">    val isDonut: Boolean = true,</span>
+<span class="pc" id="L129">    val paidDuration: Int = 0,</span>
+<span class="pc" id="L130">    val canPublishFreeCopy: Boolean = true,</span>
+<span class="pc" id="L131">    val editMode: String = &quot;&quot;</span>
+<span class="fc" id="L132">)</span>
 
 
 

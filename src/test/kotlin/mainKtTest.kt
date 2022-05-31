@@ -44,6 +44,23 @@ class mainKtTest {
         val update = Post(id = 3, text = "Upps")
         val result = service.update(update)
         assertTrue(result)
+    }
+
+    @Test(expected = PostNotFoundException::class)
+    fun CreateCommentTrue() {
+        val service = WallService()
+        service.add(Post(id = 1, text = "Hello"))
+        service.add(Post(id = 2, text = "world"))
+        service.createComments(2, Comments(text = "newComment"))
+    }
+
+    @Test(expected = PostNotFoundException::class)
+    fun CreateCommentFalse() {
+        val service = WallService()
+        service.add(Post(id = 1, text = "Hello"))
+        service.add(Post(id = 2, text = "world"))
+        service.createComments(5, Comments(text = "newComment"))
 
     }
+
 }
